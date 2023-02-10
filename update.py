@@ -6,6 +6,7 @@ import csv
 import sqlite3
 import time
 from datetime import datetime
+import requests
 
 def run_update():
     # DB 접속
