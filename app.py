@@ -17,8 +17,7 @@ from suggestions import run_suggestions
 from chatbot_a.chatbot import chatrun
 from update import update_data
 
-selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 예측", "🤖챗봇", '💬건의사항'], 
-    # icons=['house', 'cloud-upload', "list-task", 'gear'], 
+selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 예측", "🤖챗봇", '💬건의사항'],  
     menu_icon="cast", default_index=0, orientation="horizontal",
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
@@ -31,11 +30,9 @@ selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 
 # 홈 탭
 if selected3 == "🏠Home":
     data = update_data()
-    # data = pd.read_csv('data/bds_data.csv', encoding='cp949')
     data2 = data.copy()
     po = data2['SGG_NM'] == '영등포구'
     tel = data2['HOUSE_GBN_NM'] == '아파트'
-    # st.write(data2[po & tel]['BOBN'].count())
 
     now = datetime.now()
     before_day = now - relativedelta(days=1)

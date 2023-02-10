@@ -26,9 +26,6 @@ import sqlite3
 
 from mean_db import ml_data
 
-# 한글 변환
-# mat.rcParams['font.family']='Gulim'
-
 def prediction2():
 
     st.header('전세 실거래가 예측')
@@ -37,22 +34,12 @@ def prediction2():
     dbConn.close()
     list = df_bds1['SGG_NM'].unique()
     date = df_bds1['CNTRCT_DE'].max()
-    
-    
-    # PATH = 'data/'
-    # file_list = os.listdir(PATH + 'ml_data')
-    # list = []
-    # for i in file_list:
-    #     a = i.split('.')[0]
-    #     if a !='':
-    #         list.append(a)
-    # list
+
     s = st.selectbox('원하는 구를 선택하세요',(list))
     tab1, tab2 = st.tabs(['Tab 1', 'Tab 2'])
     with tab1:
     # 예측모델 1
         check = st.checkbox(f'{s} '"실거래가 예측 수치로 보기 1")
-        # data1 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=False)
         data1 = ml_data(s)
         df_train = data1[['CNTRCT_DE', 'RENT_GTN']]
         df_train = df_train.rename(columns={"CNTRCT_DE": "ds", "RENT_GTN": "y"})
@@ -61,7 +48,6 @@ def prediction2():
 
         future = m.make_future_dataframe(periods=30)
         forecast = m.predict(future)
-            # st.write(forecast)
 
         dates = forecast['ds']
         y_truedates = dates[:len(dates)-30, ]
@@ -95,7 +81,6 @@ def prediction2():
     with tab2:
     # 예측 모델 2
         check2 = st.checkbox(f'{s} '"실거래가 예측 수치로 보기 2")
-        # data2 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=0)
         data2 = ml_data(s).set_index('CNTRCT_DE')
         y = data2['RENT_GTN'].fillna(method='ffill').values.reshape(- 1, 1)
 
