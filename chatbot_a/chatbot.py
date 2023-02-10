@@ -5,8 +5,7 @@ from streamlit_chat import message
 import requests
 
 
-api_secret = st.secrets.openai_credentials.api_secret
-openai.api_key = api_secret
+openai.api_key = st.secrets.api_credentials.openai_key
 # Creating a function which will generate the calls from the api
 def chatrun():
     def generate_response(prompt):
