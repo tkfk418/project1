@@ -15,7 +15,6 @@ from search import run_search
 from predict import run_predict
 from suggestions import run_suggestions
 from update import update_data
-from update import run_update
 from mean_db import dong_j_d_mean
 from chatbot_a.chatbot import chatrun
 
