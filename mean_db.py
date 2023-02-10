@@ -31,7 +31,7 @@ def gu_w_m_mean(df_bds):
 # 동별 전세 일 평균
 def dong_j_d_mean(df_bds):
     df = df_bds.drop(df_bds[df_bds['RENT_GBN']=='월세'].index, axis=0)
-    df2 = df.groupby(['BJDONG_NM','CNTRCT_DE'])['RENT_DE'].mean().reset_index()
+    df2 = df.groupby(['BJDONG_NM','CNTRCT_DE'])['RENT_GTN'].mean().reset_index()
     return df2
 
 # ml2.py 구별 data
