@@ -1,9 +1,11 @@
 # 내 방 어디? v1(~2023.02.01)
-[내 방 어디? 링크](https://tkfk418-project1-app-rvi6au.streamlit.app/)
+[내 방 어디? 링크](https://tkfk418-project1-app-xgbcty.streamlit.app/)
 ![screensh](image/homepage.PNG)
+***
 
 ## 목적
 계약일 기준 2022년 1월 1일부터 현재까지의 **서울시 전/월세 실거래 데이터 기반 검색** 및 **전세 시세 예측** 부동산 웹 개발
+***
 
 ## 팀 구성
 - 사용언어 : <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white">
@@ -31,6 +33,7 @@
     - 게시판 목록 구현
     - 관리자모드
         - 처리상태 변경
+***
 
 ## 설치 방법
 ### Windows
@@ -91,3 +94,8 @@
     - 구별 월세 일 평균 **함수화**
     - 구별 월세 월 평균 **함수화**
     - 동별 전세 일 평균 **함수화**
+
+### 한계점
+- 날짜 및 자치구별 동 선택 후 동별 평균 실거래가 지도 시각화 실패
+  - 실시간 데이터와 geojson 파일의 법정동 명의 다름으로 지도 시각화가 나오지 않음
+  - 추후 업데이트 할 예정
