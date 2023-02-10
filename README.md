@@ -5,6 +5,13 @@
 ## 목적
 계약일 기준 2022년 1월 1일부터 현재까지의 **서울시 전/월세 실거래 데이터 기반 검색** 및 **전세 시세 예측** 웹 개발
 
+## 팀 구성
+- 사용언어 : <img src="https://img.shields.io/badge/Python-3776AB?style=flat&logo=Python&logoColor=white">
+- 작업툴 : <img src="https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=Visual%20Studio%20Code&logoColor=white">
+- 인원 : 7명
+- 기간 : 2023-01-30 - 2023-02-10
+***
+
 ## 주요 기능
 - 홈페이지
     - 실거래 현황(최근 한달순)
