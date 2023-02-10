@@ -5,33 +5,25 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 import math
-import sqlite3
-import datetime
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
+st.title('내 방 어디?')
+
 from search import run_search
 from predict import run_predict
 from suggestions import run_suggestions
-from update import update_data
-from mean_db import dong_j_d_mean
 from chatbot_a.chatbot import chatrun
+from update import update_data
 
-
-st.title(':house_buildings:내 방, 어디:eyes:?')
-
-
-
-
-
-selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 예측", '🤖챗봇', '💬건의사항'], 
+selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 예측", "🤖챗봇", '💬건의사항'], 
     # icons=['house', 'cloud-upload', "list-task", 'gear'], 
     menu_icon="cast", default_index=0, orientation="horizontal",
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
-        "icon": {"color": "gray", "font-size": "12px"}, 
-        "nav-link": {"font-size": "12px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "icon": {"color": "gray", "font-size": "15px"}, 
+        "nav-link": {"font-size": "15px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
         "nav-link-selected": {"background-color": "#47C83E"},
     }
 )
@@ -40,35 +32,27 @@ selected3 = option_menu(None, ["🏠Home", "🔎전월세 검색",  "📊전세 
 if selected3 == "🏠Home":
     data = update_data()
     # data = pd.read_csv('data/bds_data.csv', encoding='cp949')
-
     data2 = data.copy()
-    # data = pd.DataFrame(data)
-    mean = dong_j_d_mean(data)
-    st.write(mean)
+    po = data2['SGG_NM'] == '영등포구'
+    tel = data2['HOUSE_GBN_NM'] == '아파트'
+    # st.write(data2[po & tel]['BOBN'].count())
 
     now = datetime.now()
     before_day = now - relativedelta(days=1)
     before_month = before_day - relativedelta(months=1)
     before_day = before_day.strftime("%Y-%m-%d")
     before_month = before_month.strftime("%Y-%m-%d")
-    
+
     with st.sidebar:
         st.markdown('# 　　　　　목차')
         st.markdown('## HOME\n ### 전월세 검색\n ### 전세 예측\n - 전월세 평균 그래프\n - 전월세 실거래수 지역 순위\n - 날짜별 거래\n - 전세 예측\n - 전월세 전환율 / 대출이자 계산기 \n### ChatBot\n ### 건의 사항')
 
+
     # 실거래 현황
-    st.markdown("""
-    ## :crown:실거래 현황
-    - *현재까지의 서울시 집에 대한 실거래가 현황입니다!*
-
-    """)
-    st.subheader('실거래 현황 (최신순)')
+    st.subheader('최근 한달 실거래 현황 (최신순)')
     st.write("기간 : " + f'{before_month}' + " ~ " +f'{before_day}' + " (계약일 기준)")
-    st.write("매일 오전 10시 5분 데이터 갱신")
-    latest = data.loc[1,['CNTRCT_DE']].values[0]
-    st.write("기간 : 2022.01.01 ~ " +f'{latest}' + " (계약일 기준)")
-    # data = data[data['CNTRCT_DE']>=f'{before_month}']
-
+    data = data[data['CNTRCT_DE']>=f'{before_month}']
+    
     data['FLR_NO'] = data['FLR_NO'].astype(str) + '층'
     cols = ['BOBN', 'BUBN']
     data['번지'] = data[cols].apply(lambda row: '-'.join(row.values.astype(str))
@@ -86,7 +70,7 @@ if selected3 == "🏠Home":
     data.index = data.index+1
     st.write(data)
 
-
+    
 # 전월세 검색 탭
 elif selected3 == "🔎전월세 검색":
     run_search()
@@ -94,17 +78,12 @@ elif selected3 == "🔎전월세 검색":
 # 전세 시세 예측 탭 
 elif selected3 == "📊전세 예측":
     run_predict()
-    
 
 elif selected3 == "🤖챗봇":
     chatrun()
-    
 
 # 건의사항 탭
 elif selected3 == "💬건의사항":
     run_suggestions()
-    
 else:
     selected3 == "🏠Home"
-
-

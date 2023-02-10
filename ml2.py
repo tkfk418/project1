@@ -22,6 +22,9 @@ from keras.layers import Dense, LSTM
 from tensorflow.python.keras import Sequential
 import plotly.express as px
 import plotly.graph_objects as go
+import sqlite3
+
+from mean_db import ml_data
 
 # 한글 변환
 mat.rcParams['font.family']='Gulim'
@@ -29,21 +32,28 @@ mat.rcParams['font.family']='Gulim'
 def prediction2():
 
     st.header('전세 실거래가 예측')
+    dbConn=sqlite3.connect("data/mydata.db")
+    df_bds1 = pd.read_sql_query('SELECT * FROM budongsan2', dbConn)
+    dbConn.close()
+    list = df_bds1['SGG_NM'].unique()
+    date = df_bds1['CNTRCT_DE'].max()
     
-    PATH = 'data/'
-    file_list = os.listdir(PATH + 'ml_data')
-    list = []
-    for i in file_list:
-        a = i.split('.')[0]
-        if a !='':
-            list.append(a)
+    
+    # PATH = 'data/'
+    # file_list = os.listdir(PATH + 'ml_data')
+    # list = []
+    # for i in file_list:
+    #     a = i.split('.')[0]
+    #     if a !='':
+    #         list.append(a)
     # list
-    s =st.selectbox('원하는 구를 선택하세요',(list))
+    s = st.selectbox('원하는 구를 선택하세요',(list))
     tab1, tab2 = st.tabs(['Tab 1', 'Tab 2'])
     with tab1:
     # 예측모델 1
         check = st.checkbox(f'{s} '"실거래가 예측 수치로 보기 1")
-        data1 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=False)
+        # data1 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=False)
+        data1 = ml_data(s)
         df_train = data1[['CNTRCT_DE', 'RENT_GTN']]
         df_train = df_train.rename(columns={"CNTRCT_DE": "ds", "RENT_GTN": "y"})
         m = Prophet()
@@ -58,26 +68,26 @@ def prediction2():
         y_predates = dates[len(dates)-30:, ]
         if check:
             st.subheader(f'{s} ''실거래가 예측 수치')
-            st.write(forecast.loc[forecast['ds'] > '2023-01-30', ['ds','yhat']])
+            st.write(forecast.loc[forecast['ds'] > date, ['ds','yhat']])
             st.write("👉 ds: 날짜 ,"'yhat: 예측가')
         else:
             st.subheader(f'{s} ''실거래가 예측 그래프')
             fig, ax = plt.subplots()
-            ax.plot(y_truedates, forecast.loc[forecast['ds'] <= '2023-01-30', ['trend']],label='past')
+            ax.plot(y_truedates, forecast.loc[forecast['ds'] <= date, ['trend']],label='past')
             ax.fill_between(x = y_truedates, 
-                            y1=forecast.loc[forecast['ds'] <= '2023-01-30', ['yhat_lower']]['yhat_lower'], 
-                            y2=forecast.loc[forecast['ds'] <= '2023-01-30', ['yhat_upper']]['yhat_upper'], 
+                            y1=forecast.loc[forecast['ds'] <= date, ['yhat_lower']]['yhat_lower'], 
+                            y2=forecast.loc[forecast['ds'] <= date, ['yhat_upper']]['yhat_upper'], 
                             color='#70D5F5', alpha=0.2, label='Uncertainty interval'
                             )
-            ax.plot(y_predates, forecast.loc[forecast['ds'] > '2023-01-30', ['yhat']],label='prediction')
+            ax.plot(y_predates, forecast.loc[forecast['ds'] > date, ['yhat']],label='prediction')
             ax.fill_between(x = y_predates, 
-                            y1=forecast.loc[forecast['ds'] > '2023-01-30', ['yhat_lower']]['yhat_lower'], 
-                            y2=forecast.loc[forecast['ds'] > '2023-01-30', ['yhat_upper']]['yhat_upper'], 
+                            y1=forecast.loc[forecast['ds'] > date, ['yhat_lower']]['yhat_lower'], 
+                            y2=forecast.loc[forecast['ds'] > date, ['yhat_upper']]['yhat_upper'], 
                             color='#F55C1A', alpha=0.2, label='Uncertainty interval'
                             )
             ax.legend()
             ax.grid(True, which='major', c='gray', ls='-', lw=1, alpha=0.2)
-            ax.set_title('Prophet Graph')
+            ax.set_title('Prophet 모델')
             st.pyplot(fig)
    
 
@@ -85,7 +95,8 @@ def prediction2():
     with tab2:
     # 예측 모델 2
         check2 = st.checkbox(f'{s} '"실거래가 예측 수치로 보기 2")
-        data2 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=0)
+        # data2 = pd.read_csv(PATH + 'ml_data/' + s + '.csv', encoding='cp949', index_col=0)
+        data2 = ml_data(s).set_index('CNTRCT_DE')
         y = data2['RENT_GTN'].fillna(method='ffill').values.reshape(- 1, 1)
 
         # 피처 엔지니어링
@@ -164,7 +175,7 @@ def prediction2():
             ax.plot(results['RENT_GTN'], label='past')
             ax.plot(results['Forecast'],label='prediction')
             ax.legend()
-            plt.title('LSTM Graph')
+            plt.title('LSTM 모델')
             st.pyplot(fig)
     
 
