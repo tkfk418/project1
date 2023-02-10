@@ -107,9 +107,4 @@ elif selected3 == "💬건의사항":
 else:
     selected3 == "🏠Home"
 
-# update.py
-# 맨 아래에 추가 해주세요.
-if __name__ == "__main__":
-    run_update()
-    update_data()
-    print("확인")
+

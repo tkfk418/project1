@@ -1,4 +1,4 @@
-set root=C:\Users\h\Desktop\project4
+set root=C:\Users\human\Desktop\project1
 
 call git add .
 call git commit -m "updated from batch file"
