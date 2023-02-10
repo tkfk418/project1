@@ -17,3 +17,4 @@ seaborn
 openai
 streamlit_chat
 requests
+matplotlib.font_manager
