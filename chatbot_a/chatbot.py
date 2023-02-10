@@ -25,7 +25,6 @@ def chatrun():
             ACC_YEAR = s[2][:4]
             service_key = '4d42486779706d3034365957634870'
             for j in range(1,2):
-                #url = f'http://openapi.seoul.go.kr:8088/{service_key}/json/tbLnOpendataRentV/{1+((j-1)*100)}/{j*100}/'+ n[0] +'/'+ result
                 url = f'http://openapi.seoul.go.kr:8088/{service_key}/json/tbLnOpendataRentV/1/5/{ACC_YEAR}/{result}/ / / / / /{CNTRCT_DE}'
                 print(url)
                 req = requests.get(url)
