@@ -47,6 +47,10 @@ if selected3 == "🏠Home":
     before_month = before_day - relativedelta(months=1)
     before_day = before_day.strftime("%Y-%m-%d")
     before_month = before_month.strftime("%Y-%m-%d")
+    
+    with st.sidebar:
+        st.markdown('# 　　　　　목차')
+        st.markdown('## HOME\n ### 전월세 검색\n ### 전세 예측\n - 전월세 평균 그래프\n - 전월세 실거래수 지역 순위\n - 날짜별 거래\n - 전세 예측\n - 전월세 전환율 / 대출이자 계산기 \n### ChatBot\n ### 건의 사항')
 
     # 실거래 현황
     st.markdown("""
