@@ -15,6 +15,8 @@ from search import run_search
 from predict import run_predict
 from suggestions import run_suggestions
 from update import update_data
+from update import run_update
+from mean_db import dong_j_d_mean
 from chatbot_a.chatbot import chatrun
 
 
@@ -41,6 +43,9 @@ if selected3 == "🏠Home":
     # data = pd.read_csv('data/bds_data.csv', encoding='cp949')
 
     data2 = data.copy()
+    # data = pd.DataFrame(data)
+    mean = dong_j_d_mean(data)
+    st.write(mean)
 
     now = datetime.now()
     before_day = now - relativedelta(days=1)
@@ -61,7 +66,9 @@ if selected3 == "🏠Home":
     st.subheader('실거래 현황 (최신순)')
     st.write("기간 : " + f'{before_month}' + " ~ " +f'{before_day}' + " (계약일 기준)")
     st.write("매일 오전 10시 5분 데이터 갱신")
-    data = data[data['CNTRCT_DE']>=f'{before_month}']
+    latest = data.loc[1,['CNTRCT_DE']].values[0]
+    st.write("기간 : 2022.01.01 ~ " +f'{latest}' + " (계약일 기준)")
+    # data = data[data['CNTRCT_DE']>=f'{before_month}']
 
     data['FLR_NO'] = data['FLR_NO'].astype(str) + '층'
     cols = ['BOBN', 'BUBN']
@@ -100,3 +107,10 @@ elif selected3 == "💬건의사항":
     
 else:
     selected3 == "🏠Home"
+
+# update.py
+# 맨 아래에 추가 해주세요.
+if __name__ == "__main__":
+    run_update()
+    update_data()
+    print("확인")

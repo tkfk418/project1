@@ -1,7 +1,4 @@
-@REM Git batch파일 코드
-set repo_path=C:\Users\h\Desktop\project4
-cd /d %repo_path%
-call git add .
-call git commit -m "updated from batch file"
-call git push
+call C:\Users\h\Desktop\project4\venv\Scripts\activate
+@cd C:\Users\h\Desktop\project4
+python z.py
 pause
