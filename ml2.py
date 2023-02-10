@@ -27,7 +27,7 @@ import sqlite3
 from mean_db import ml_data
 
 # 한글 변환
-mat.rcParams['font.family']='Gulim'
+# mat.rcParams['font.family']='Gulim'
 
 def prediction2():
 
