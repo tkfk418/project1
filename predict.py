@@ -9,8 +9,6 @@ import geopandas as gp
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from stqdm import stqdm
-from time import sleep
 import warnings
 warnings.filterwarnings("ignore")
 from stqdm_model import stqdm_model
