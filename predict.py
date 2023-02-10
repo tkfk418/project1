@@ -11,7 +11,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import warnings
 warnings.filterwarnings("ignore")
-from stqdm_model import stqdm_model
 from ml2 import prediction2
 from update import update_data
 from mean_db import dong_j_d_mean, gu_j_d_mean, gu_j_m_mean, gu_w_d_mean, gu_w_m_mean
