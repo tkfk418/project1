@@ -166,6 +166,8 @@ def run_search():
             pass
         else:
             type_search = (data['RENT_GBN'] == type_select)
+        data['RENT_GTN'] = pd.to_numeric(data['RENT_GTN'])
+        data['RENT_FEE']= pd.to_numeric(data['RENT_FEE'])
         rent_gtn_search = (data['RENT_GTN'] >= rent_gtn_select[0]) & (data['RENT_GTN'] <= rent_gtn_select[1])
         rent_fee_search = (data['RENT_FEE'] >= rent_fee_select[0]) & (data['RENT_FEE'] <= rent_fee_select[1])
         # 면적 최솟값, 최댓값 평 -> 제곱미터 변환
