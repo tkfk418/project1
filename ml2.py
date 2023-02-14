@@ -55,7 +55,7 @@ def prediction2():
         if check:
             st.subheader(f'{s} ''실거래가 예측 수치')
             st.write(forecast.loc[forecast['ds'] > date, ['ds','yhat']])
-            st.write('👉 ds: 날짜,''　　''yhat: 예측가')
+            st.write('👉 ds: 날짜,''　''yhat: 예측가')
         else:
             st.subheader(f'{s} ''실거래가 예측 그래프')
             fig, ax = plt.subplots()
@@ -152,7 +152,7 @@ def prediction2():
         if check2:
             st.subheader(f'{s} ''실거래가 예측 수치')
             st.write(df_future[['Date','Forecast']])
-            st.write('👉Date: 날짜,''　　''Forecast: 예측가')
+            st.write('👉Date: 날짜,''　''Forecast: 예측가')
             
         else:
             st.subheader(f'{s} ''실거래가 예측 그래프') 
