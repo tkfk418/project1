@@ -48,10 +48,14 @@ def prediction2(data):
         future = p_model.make_future_dataframe(periods=30)
         forecast = p_model.predict(future)
         
-        dates = forecast['ds']
-        y_truedates = dates[:len(dates)-30, ]
-        y_predates = dates[len(dates)-30:, ]
-        # fig, ax = plt.subplots()
+        # dates = forecast['ds']
+        # y_truedates = dates[:len(dates)-30, ]
+        # y_predates = dates[len(dates)-30:, ]
+        # # fig, ax = plt.subplots()
+        
+        true_df = forecast.loc[forecast['ds'] <= date, ['ds','trend']]
+        pred_df = forecast.loc[forecast['ds'] > date, ['ds','trend']]
+
         if check:
             st.subheader(f'{SELECTED_SGG} ''실거래가 예측 수치')
             st.write(forecast.loc[forecast['ds'] > date, ['ds','yhat']])
@@ -59,15 +63,14 @@ def prediction2(data):
         else:
             st.subheader(f'{SELECTED_SGG} ''실거래가 예측 그래프')
             fig, ax = plt.subplots()
-            ax.plot(y_truedates, forecast.loc[forecast['ds'] <= date, ['trend']],label='past')
-            ax.fill_between(x = y_truedates, 
-                            
+            ax.plot(true_df['ds'], true_df['trend'],label='past')
+            ax.fill_between(x = true_df['ds'], 
                             y1=forecast.loc[forecast['ds'] <= date, ['yhat_lower']]['yhat_lower'], 
                             y2=forecast.loc[forecast['ds'] <= date, ['yhat_upper']]['yhat_upper'], 
                             color='#70D5F5', alpha=0.2, label='Uncertainty interval'
                             )
-            ax.plot(y_predates, forecast.loc[forecast['ds'] > date, ['yhat']],label='prediction')
-            ax.fill_between(x = y_predates, 
+            ax.plot(pred_df['ds'], forecast.loc[forecast['ds'] > date, ['yhat']],label='prediction')
+            ax.fill_between(x = pred_df['ds'], 
                             y1=forecast.loc[forecast['ds'] > date, ['yhat_lower']]['yhat_lower'], 
                             y2=forecast.loc[forecast['ds'] > date, ['yhat_upper']]['yhat_upper'], 
                             color='#F55C1A', alpha=0.2, label='Uncertainty interval'
