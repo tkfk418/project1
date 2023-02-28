@@ -8,7 +8,43 @@ import time
 from datetime import datetime
 import requests
 
+# 최신 데이터 불러오는 함수(매일 갱신)
 def run_update():
+    '''
+    url 주소에서 json을 받아와 DB에 저장합니다.
+
+    Parameters
+    ------------
+    4d42486779706d3034365957634870 : str
+        인증키
+
+    http://openapi.seoul.go.kr:8088/{service_key}/json/tbLnOpendataRentV/{1+((j-1)*1000)}/{j*1000} : str
+        json 받아올 url
+
+    df : dataframe
+        받아온 부동산 데이터를 데이터프레임화
+            SGG_CD       : 자치구코드
+            SGG_NM       : 자치구명
+            BJDONG_CD    : 법정동코드
+            BJDONG_NM    : 법정동명
+            BOBN         : 본번
+            BUBN         : 부번
+            FLR_NO       : 층
+            CNTRCT_DE    : 계약일
+            RENT_GBN     : 전월세 구분
+            RENT_AREA    : 임대면적(㎡)
+            RENT_GTN     : 보증금(만원)
+            RENT_FEE     : 임대료(만원)
+            BLDG_NM      : 건물명
+            BUILD_YEAR   : 건축년도
+            HOUSE_GBN_NM : 건물용도
+    
+    data/mydata.db : DB
+        부동산 데이터가 들어있는 DB
+
+    budongsan2 : table
+        부동산 데이터가 들어있는 테이블
+    '''
     # DB 접속
     dbConn=sqlite3.connect("data/mydata.db")
     cs=dbConn.cursor()
@@ -17,7 +53,7 @@ def run_update():
     service_key = '4d42486779706d3034365957634870'
     data = []
 
-    for j in range(1,2):
+    for j in range(1,3):
         url = f'http://openapi.seoul.go.kr:8088/{service_key}/json/tbLnOpendataRentV/{1+((j-1)*1000)}/{j*1000}'
         print(url)
         req = requests.get(url)
@@ -74,6 +110,25 @@ def run_update():
 
 # 전체 데이터 불러오는 함수
 def update_data():
+    '''
+    DB에 저장되어 있는 budongsan2 테이블 데이터를 불러와 df_bds로 반환합니다.
+
+    Parameters
+    -----------
+    data/mydata.db : DB
+        부동산 데이터 저장되어있는 DB
+
+    budongsan2 : table
+        mydata.db안 테이블
+
+    df_bds : dataframe
+        부동산 데이터
+
+    return 
+    -----------
+    df_bds : dataframe
+        최신 부동산 데이터(2022.01.01 ~)
+    '''
     # DB 접속
     dbConn=sqlite3.connect("data/mydata.db")
     cs=dbConn.cursor()
@@ -98,9 +153,6 @@ def update_data():
     
     return df_bds
 
-if __name__ == "__main__":
+if __name__=="__main__":
     run_update()
     update_data()
-    print("확인")
-
-

@@ -1,14 +1,23 @@
 # 전월세 검색 탭
 
+# 라이브러리
 import streamlit as st
 import pandas as pd
 import numpy as np
 import math
+
+# 다른 함수 import
 from update import update_data
 
-def run_search():
+def run_search(data):
+    """ 홈페이지에서 전/월세검색을 표시하는 함수입니다.
+    
+    Parameters:
+    Returns: 최종적으로 조건에 맞게 선택된 데이터를 리턴합니다.
+
+    """
     st.markdown("""
-    ## 전월세 검색결과:mag:
+    ## 전월세 검색결과:mag:️
     *※ 왼쪽 사이드바에 있는 것을 조건에 맞게 선택하신 후 조회버튼을 눌러주세요※*
     # """)
     data = update_data()
@@ -60,15 +69,15 @@ def run_search():
                                     on_change = update_slider_gtn))
     if min_gtn > max_gtn:
         st.sidebar.error("최대가 최소보다 크거나 같게 설정하시오.")
-    # try:
-    rent_gtn_select = st.sidebar.select_slider('보증금(만단위)', 
+    try:
+        rent_gtn_select = st.sidebar.select_slider('보증금(만단위)', 
                                                     options=np.arange(int(min(rent_gtn_list)), int(max(rent_gtn_list))+1), 
                                                     value=(min_gtn, max_gtn),
                                                     key = ('slider_gtn_min', 'slider_gtn_max'), 
                                                     label_visibility="collapsed",
                                                     on_change = update_numin_gtn)
-    # except:
-        # st.sidebar.error("범위 안 숫자를 입력하시오.")
+    except:
+        st.sidebar.error("범위 안 숫자를 입력하시오.")
     
     # 월세 선택 슬라이더
     def update_slider_fee():
@@ -158,16 +167,16 @@ def run_search():
 
     # 버튼
     if st.sidebar.button('조회'):
-        data['RENT_GTN'] = pd.to_numeric(data['RENT_GTN'])
-        data['RENT_FEE']= pd.to_numeric(data['RENT_FEE'])
         gu_search = (data['SGG_NM'] == gu_select)
         dong_search = (data['BJDONG_NM'] == dong_select)
         if '모두' in type_select:
             pass
         else:
             type_search = (data['RENT_GBN'] == type_select)
+        
         data['RENT_GTN'] = pd.to_numeric(data['RENT_GTN'])
         data['RENT_FEE']= pd.to_numeric(data['RENT_FEE'])
+        
         rent_gtn_search = (data['RENT_GTN'] >= rent_gtn_select[0]) & (data['RENT_GTN'] <= rent_gtn_select[1])
         rent_fee_search = (data['RENT_FEE'] >= rent_fee_select[0]) & (data['RENT_FEE'] <= rent_fee_select[1])
         # 면적 최솟값, 최댓값 평 -> 제곱미터 변환
