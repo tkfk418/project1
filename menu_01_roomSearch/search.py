@@ -9,7 +9,7 @@ import math
 # 다른 함수 import
 from update import update_data
 
-def run_search(data):
+def run_search():
     """ 홈페이지에서 전/월세검색을 표시하는 함수입니다.
     
     Parameters:
